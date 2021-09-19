@@ -31,13 +31,28 @@ private:
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1000, 1000), "<<< Title goes here >>>");
+    
     sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    shape.setFillColor(sf::Color::Red);
+
+    shape.setPosition(1000/2, 1000/2);
 
     Zonner new_zonner({ 50, 50 });
 
     bool temp_flag = false;
-    sf::Vector2i position;
+    sf::Vector2i mouse_position;
+
+    sf::Texture textureBackground;
+    textureBackground.loadFromFile("152427516.png");
+
+    // Create a sprite
+    sf::Sprite spriteBackground;
+
+    // Attach the texture to the sprite
+    spriteBackground.setTexture(textureBackground);
+
+    // Set the spriteBackground to cover the screen
+    spriteBackground.setPosition(0, 0);
 
     while (window.isOpen())
     {
@@ -49,21 +64,21 @@ int main()
         }
         // Clears screen every loop (Shapes constantly redraw to window.
         window.clear();
-        
+        window.draw(spriteBackground);
         if (event.type == sf::Event::MouseButtonPressed)
         {
-            position = sf::Mouse::getPosition();
+            mouse_position = sf::Mouse::getPosition(window);
             temp_flag = true;
+            new_zonner.set_pos(sf::Vector2f(mouse_position));
             //system("pause");
         }
         if (temp_flag == true)
         {
             //std::cout << sf::Mouse::getPosition() << "\n";
             new_zonner.spawn_to_window(window);
-            new_zonner.set_pos(sf::Vector2f(position));
-            window.draw(shape);
+            new_zonner.set_pos({ new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 1 });
         }
-
+        window.draw(shape);
         window.display();
         //Sleep(0.9);
     }
