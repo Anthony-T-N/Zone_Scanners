@@ -34,25 +34,44 @@ int main()
     
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Red);
-
     shape.setPosition(1000/2, 1000/2);
 
-    Zonner new_zonner({ 50, 50 });
+    sf::RectangleShape wall({ 100, 50 });
+    wall.setFillColor(sf::Color::White);
+    wall.setPosition(700, 700);
+
+    Zonner new_zonner({ 25, 25 });
 
     bool temp_flag = false;
     sf::Vector2i mouse_position;
 
     sf::Texture textureBackground;
-    textureBackground.loadFromFile("152427516.png");
-
     // Create a sprite
     sf::Sprite spriteBackground;
+    sf::Vector2u TextureSize;  //Added to store texture size.
+    sf::Vector2u WindowSize;   //Added to store window size.
 
     // Attach the texture to the sprite
-    spriteBackground.setTexture(textureBackground);
+    // spriteBackground.setTexture(textureBackground);
 
     // Set the spriteBackground to cover the screen
-    spriteBackground.setPosition(0, 0);
+    // spriteBackground.setPosition(0, 0);
+
+    if (!textureBackground.loadFromFile("152427516.png"))
+    {
+        return -1;
+    }
+    else
+    {
+        TextureSize = textureBackground.getSize(); //Get size of texture.
+        WindowSize = window.getSize();             //Get size of window.
+
+        float ScaleX = (float)WindowSize.x / TextureSize.x;
+        float ScaleY = (float)WindowSize.y / TextureSize.y;     //Calculate scale.
+
+        spriteBackground.setTexture(textureBackground);
+        spriteBackground.setScale(ScaleX, ScaleY);      //Set scale.  
+    }
 
     while (window.isOpen())
     {
@@ -65,6 +84,7 @@ int main()
         // Clears screen every loop (Shapes constantly redraw to window.
         window.clear();
         window.draw(spriteBackground);
+        window.draw(wall);
         if (event.type == sf::Event::MouseButtonPressed)
         {
             mouse_position = sf::Mouse::getPosition(window);
@@ -76,7 +96,13 @@ int main()
         {
             //std::cout << sf::Mouse::getPosition() << "\n";
             new_zonner.spawn_to_window(window);
-            new_zonner.set_pos({ new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 1 });
+            /*
+            if (window.GetPixel(posX + a, posY + b) == wallColor)
+            {
+
+            }// define wallColor
+            */
+            new_zonner.set_pos({ new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0 });
         }
         window.draw(shape);
         window.display();
