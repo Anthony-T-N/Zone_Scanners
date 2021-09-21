@@ -13,7 +13,7 @@ public:
     }
     void spawn_to_window(sf::RenderWindow& window)
     {
-        std::cout << "[DEBUG] Spawn zonner to window;" << "\n";
+        //std::cout << "[DEBUG] Spawn zonner to window;" << "\n";
         window.draw(zonner);
     }
     void set_pos(sf::Vector2f new_pos)
@@ -40,16 +40,20 @@ int main()
     wall.setFillColor(sf::Color::White);
     wall.setPosition(700, 700);
 
-    Zonner new_zonner({ 25, 25 });
+    Zonner new_zonner({ 15, 15 });
 
     bool temp_flag = false;
     sf::Vector2i mouse_position;
+
+    // https://stackoverflow.com/questions/36448101/2-3-1-set-scale-of-background-texture-to-renderwindow-size
 
     sf::Texture textureBackground;
     // Create a sprite
     sf::Sprite spriteBackground;
     sf::Vector2u TextureSize;  //Added to store texture size.
     sf::Vector2u WindowSize;   //Added to store window size.
+
+    sf::Image image;
 
     // Attach the texture to the sprite
     // spriteBackground.setTexture(textureBackground);
@@ -70,7 +74,9 @@ int main()
         float ScaleY = (float)WindowSize.y / TextureSize.y;     //Calculate scale.
 
         spriteBackground.setTexture(textureBackground);
-        spriteBackground.setScale(ScaleX, ScaleY);      //Set scale.  
+        spriteBackground.setScale(ScaleX, ScaleY);      //Set scale.
+
+        image = textureBackground.copyToImage();
     }
 
     while (window.isOpen())
@@ -102,6 +108,15 @@ int main()
 
             }// define wallColor
             */
+            // https://stackoverflow.com/questions/46754875/pixel-with-specyfic-color-is-not-in-the-position-it-was-put-in-sfml
+            sf::Color imagecolor = image.getPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0);
+            std::cout << imagecolor.toInteger() << "\n";
+            //std::cout << (window.capture().getPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)).toInteger() << "\n";
+            if (new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)
+            {
+                new_zonner.get_zonners().setFillColor(sf::Color::Red);
+            }
+
             new_zonner.set_pos({ new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0 });
         }
         window.draw(shape);
