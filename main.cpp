@@ -1,7 +1,6 @@
-#include <iostream>
-//#include <Windows.h>
-
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include <Windows.h>
 
 class Zonner
 {
@@ -110,7 +109,11 @@ int main()
             */
             // https://stackoverflow.com/questions/46754875/pixel-with-specyfic-color-is-not-in-the-position-it-was-put-in-sfml
             sf::Color imagecolor = image.getPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0);
-            std::cout << imagecolor.toInteger() << "\n";
+            std::cout << new_zonner.get_zonners().getPosition().x + 1 << " " << new_zonner.get_zonners().getPosition().y + 0 << "\n";
+            std::cout << (float)imagecolor.toInteger() << "\n";
+            // https://en.sfml-dev.org/forums/index.php?topic=23869.0
+            image.setPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0, sf::Color::Blue);
+            textureBackground.loadFromImage(image);
             //std::cout << (window.capture().getPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)).toInteger() << "\n";
             if (new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)
             {
@@ -119,9 +122,9 @@ int main()
 
             new_zonner.set_pos({ new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0 });
         }
-        window.draw(shape);
+        //window.draw(shape);
         window.display();
-        //Sleep(0.9);
+        Sleep(2);
     }
 
     return 0;
