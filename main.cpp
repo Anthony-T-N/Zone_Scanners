@@ -15,6 +15,7 @@ public:
         //std::cout << "[DEBUG] Spawn zonner to window;" << "\n";
         window.draw(zonner);
     }
+    // Relative to the shape's global position
     void set_pos(sf::Vector2f new_pos)
     {
         zonner.setPosition({ new_pos });
@@ -92,9 +93,11 @@ int main()
         window.draw(wall);
         if (event.type == sf::Event::MouseButtonPressed)
         {
+            // https://www.sfml-dev.org/tutorials/2.5/graphics-view.php#coordinates-conversions
             mouse_position = sf::Mouse::getPosition(window);
+            sf::Vector2f worldPos = window.mapPixelToCoords(mouse_position);
             temp_flag = true;
-            new_zonner.set_pos(sf::Vector2f(mouse_position));
+            new_zonner.set_pos(sf::Vector2f(worldPos));
             //system("pause");
         }
         if (temp_flag == true)
@@ -108,18 +111,17 @@ int main()
             }// define wallColor
             */
             // https://stackoverflow.com/questions/46754875/pixel-with-specyfic-color-is-not-in-the-position-it-was-put-in-sfml
-            sf::Color imagecolor = image.getPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0);
-            std::cout << new_zonner.get_zonners().getPosition().x + 1 << " " << new_zonner.get_zonners().getPosition().y + 0 << "\n";
-            std::cout << (float)imagecolor.toInteger() << "\n";
+            //sf::Color imagecolor = image.getPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0);
+            std::cout << "x:" << new_zonner.get_zonners().getPosition().x + 1 << " y: " << new_zonner.get_zonners().getPosition().y + 0 << "\n";
+            //std::cout << (float)imagecolor.toInteger() << "\n";
             // https://en.sfml-dev.org/forums/index.php?topic=23869.0
-            image.setPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0, sf::Color::Blue);
+            image.setPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0, sf::Color::Red);
             textureBackground.loadFromImage(image);
             //std::cout << (window.capture().getPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)).toInteger() << "\n";
             if (new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)
             {
                 new_zonner.get_zonners().setFillColor(sf::Color::Red);
             }
-
             new_zonner.set_pos({ new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0 });
         }
         //window.draw(shape);
