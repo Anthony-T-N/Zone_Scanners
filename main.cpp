@@ -8,7 +8,7 @@ public:
     Zonner(sf::Vector2f size)
     {
         zonner.setSize(size);
-        zonner.setFillColor(sf::Color::White);
+        zonner.setFillColor(sf::Color::Magenta);
     }
     void spawn_to_window(sf::RenderWindow& window)
     {
@@ -19,6 +19,10 @@ public:
     void set_pos(sf::Vector2f new_pos)
     {
         zonner.setPosition({ new_pos });
+    }
+    void set_pos(float x, float y)
+    {
+        zonner.setPosition(x , y);
     }
     sf::RectangleShape get_zonners()
     {
@@ -43,7 +47,6 @@ int main()
     Zonner new_zonner({ 15, 15 });
 
     bool temp_flag = false;
-    sf::Vector2i mouse_position;
 
     // https://stackoverflow.com/questions/36448101/2-3-1-set-scale-of-background-texture-to-renderwindow-size
 
@@ -94,10 +97,11 @@ int main()
         if (event.type == sf::Event::MouseButtonPressed)
         {
             // https://www.sfml-dev.org/tutorials/2.5/graphics-view.php#coordinates-conversions
-            mouse_position = sf::Mouse::getPosition(window);
-            sf::Vector2f worldPos = window.mapPixelToCoords(mouse_position);
+            sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+            std::cout << "(" << event.mouseButton.x << ", " << event.mouseButton.y << ")\n";
+            new_zonner.set_pos(event.mouseButton.x, event.mouseButton.y);
+            image.setPixel(event.mouseButton.x, event.mouseButton.y, sf::Color::Blue);
             temp_flag = true;
-            new_zonner.set_pos(sf::Vector2f(worldPos));
             //system("pause");
         }
         if (temp_flag == true)
@@ -128,6 +132,5 @@ int main()
         window.display();
         Sleep(2);
     }
-
     return 0;
 }
