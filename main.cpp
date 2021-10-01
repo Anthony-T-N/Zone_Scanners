@@ -64,6 +64,9 @@ int main()
     // Set the spriteBackground to cover the screen
     // spriteBackground.setPosition(0, 0);
 
+    float ScaleX;
+    float ScaleY;
+
     if (!textureBackground.loadFromFile("1524275167.png"))
     {
         return -1;
@@ -73,8 +76,8 @@ int main()
         TextureSize = textureBackground.getSize(); //Get size of texture.
         WindowSize = window.getSize();             //Get size of window.
 
-        float ScaleX = (float)WindowSize.x / TextureSize.x;
-        float ScaleY = (float)WindowSize.y / TextureSize.y;     //Calculate scale.
+        ScaleX = (float)WindowSize.x / TextureSize.x;
+        ScaleY = (float)WindowSize.y / TextureSize.y;     //Calculate scale.
 
         std::cout << ScaleX << "\n";
         std::cout << ScaleY << "\n";
@@ -103,7 +106,7 @@ int main()
             sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
             std::cout << "(" << event.mouseButton.x << ", " << event.mouseButton.y << ")\n";
             new_zonner.set_pos(event.mouseButton.x, event.mouseButton.y);
-            image.setPixel(event.mouseButton.x / 1.66667, event.mouseButton.y / 1.66667, sf::Color::Green);
+            image.setPixel(event.mouseButton.x / ScaleX, event.mouseButton.y / ScaleY, sf::Color::Green);
             temp_flag = true;
             //system("pause");
         }
@@ -118,11 +121,11 @@ int main()
             }// define wallColor
             */
             // https://stackoverflow.com/questions/46754875/pixel-with-specyfic-color-is-not-in-the-position-it-was-put-in-sfml
-            sf::Color imagecolor = image.getPixel((new_zonner.get_zonners().getPosition().x + 1) / 1.66667, (new_zonner.get_zonners().getPosition().y + 0) / 1.66667);
+            sf::Color imagecolor = image.getPixel((new_zonner.get_zonners().getPosition().x + 1) / ScaleX, (new_zonner.get_zonners().getPosition().y + 0) / ScaleY);
             //std::cout << "x:" << new_zonner.get_zonners().getPosition().x + 1 << " y: " << new_zonner.get_zonners().getPosition().y + 0 << "\n";
             std::cout << "[DEBUG]: " << (float)imagecolor.toInteger() << "\n";
             // https://en.sfml-dev.org/forums/index.php?topic=23869.0
-            image.setPixel((new_zonner.get_zonners().getPosition().x + 1) / 1.66667, (new_zonner.get_zonners().getPosition().y + 0) / 1.66667, sf::Color::Red);
+            image.setPixel((new_zonner.get_zonners().getPosition().x + 1) / ScaleX, (new_zonner.get_zonners().getPosition().y + 0) / ScaleY, sf::Color::Red);
             textureBackground.loadFromImage(image);
             //std::cout << (window.capture().getPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)).toInteger() << "\n";
             if (new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)
