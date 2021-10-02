@@ -24,6 +24,10 @@ public:
     {
         zonner.setPosition(x , y);
     }
+    void set_colour(sf::Color)
+    {
+        zonner.setFillColor(colour);
+    }
     sf::RectangleShape get_zonners()
     {
         return zonner;
@@ -88,6 +92,8 @@ int main()
         image = textureBackground.copyToImage();
     }
 
+    std::cout << new_zonner.get_zonners().getFillColor().toInteger() << "\n";
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -114,6 +120,13 @@ int main()
         {
             //std::cout << sf::Mouse::getPosition() << "\n";
             new_zonner.spawn_to_window(window);
+
+            new_zonner.get_zonners().setFillColor(sf::Color::Green);
+            new_zonner.spawn_to_window(window);
+            Sleep(5);
+            new_zonner.get_zonners().setFillColor(sf::Color::Yellow);
+            new_zonner.spawn_to_window(window);
+
             /*
             if (window.GetPixel(posX + a, posY + b) == wallColor)
             {
@@ -128,9 +141,18 @@ int main()
             image.setPixel((new_zonner.get_zonners().getPosition().x + 1) / ScaleX, (new_zonner.get_zonners().getPosition().y + 0) / ScaleY, sf::Color::Red);
             textureBackground.loadFromImage(image);
             //std::cout << (window.capture().getPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)).toInteger() << "\n";
-            if (new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)
+            if ((float)imagecolor.toInteger() == 255)
             {
-                new_zonner.get_zonners().setFillColor(sf::Color::Red);
+                std::cout << "[DEBUG]: Change colour" << "\n";
+                new_zonner.get_zonners().setFillColor(sf::Color::Blue);
+                new_zonner.get_zonners().setPosition(1, 1);
+                //new_zonner.set_colour(1);
+                std::cout << new_zonner.get_zonners().getFillColor().toInteger() << "\n";
+            }
+            else
+            {
+                // Switch to red;
+                new_zonner.set_colour(2);
             }
             new_zonner.set_pos({ new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0 });
         }
