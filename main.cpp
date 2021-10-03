@@ -24,9 +24,20 @@ public:
     {
         zonner.setPosition(x , y);
     }
-    void set_colour(sf::Color)
+    void set_colour(int num)
     {
-        zonner.setFillColor(colour);
+        if (num == 1)
+        {
+            zonner.setFillColor(sf::Color::Black);
+        }
+        else if (num == 2)
+        {
+            zonner.setFillColor(sf::Color::Blue);
+        }
+        else if (num == 3)
+        {
+            zonner.setFillColor(sf::Color::Cyan);
+        }
     }
     sf::RectangleShape get_zonners()
     {
@@ -39,10 +50,6 @@ private:
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1000, 1000), "<<< Title goes here >>>");
-    
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Red);
-    shape.setPosition(1000/2, 1000/2);
 
     sf::RectangleShape wall({ 100, 50 });
     wall.setFillColor(sf::Color::White);
@@ -91,9 +98,6 @@ int main()
 
         image = textureBackground.copyToImage();
     }
-
-    std::cout << new_zonner.get_zonners().getFillColor().toInteger() << "\n";
-
     while (window.isOpen())
     {
         sf::Event event;
@@ -102,7 +106,7 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-        // Clears screen every loop (Shapes constantly redraw to window.
+        // Clears screen every loop (Shapes constantly redraw to window).
         window.clear();
         window.draw(spriteBackground);
         window.draw(wall);
@@ -110,23 +114,13 @@ int main()
         {
             // https://www.sfml-dev.org/tutorials/2.5/graphics-view.php#coordinates-conversions
             sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-            std::cout << "(" << event.mouseButton.x << ", " << event.mouseButton.y << ")\n";
             new_zonner.set_pos(event.mouseButton.x, event.mouseButton.y);
-            image.setPixel(event.mouseButton.x / ScaleX, event.mouseButton.y / ScaleY, sf::Color::Green);
             temp_flag = true;
-            //system("pause");
         }
         if (temp_flag == true)
         {
             //std::cout << sf::Mouse::getPosition() << "\n";
             new_zonner.spawn_to_window(window);
-
-            new_zonner.get_zonners().setFillColor(sf::Color::Green);
-            new_zonner.spawn_to_window(window);
-            Sleep(5);
-            new_zonner.get_zonners().setFillColor(sf::Color::Yellow);
-            new_zonner.spawn_to_window(window);
-
             /*
             if (window.GetPixel(posX + a, posY + b) == wallColor)
             {
@@ -141,22 +135,31 @@ int main()
             image.setPixel((new_zonner.get_zonners().getPosition().x + 1) / ScaleX, (new_zonner.get_zonners().getPosition().y + 0) / ScaleY, sf::Color::Red);
             textureBackground.loadFromImage(image);
             //std::cout << (window.capture().getPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)).toInteger() << "\n";
+            bool temp_switch = true;
+            int temp_num = 1;
             if ((float)imagecolor.toInteger() == 255)
             {
                 std::cout << "[DEBUG]: Change colour" << "\n";
-                new_zonner.get_zonners().setFillColor(sf::Color::Blue);
-                new_zonner.get_zonners().setPosition(1, 1);
-                //new_zonner.set_colour(1);
-                std::cout << new_zonner.get_zonners().getFillColor().toInteger() << "\n";
+                // new_zonner.get_zonners().setFillColor(sf::Color::Blue); Doesn't work, why ?
+                new_zonner.set_colour(2);
+                std::cout << "[DEBUG]: " << new_zonner.get_zonners().getFillColor().toInteger() << "\n";
+                if (temp_switch == true)
+                {
+                    temp_num = -1;
+                    temp_switch = false;
+                }
+                else if (temp_switch == false)
+                {
+                    temp_num = 1;
+                    temp_switch = true;
+                }
             }
             else
             {
-                // Switch to red;
-                new_zonner.set_colour(2);
+                new_zonner.set_colour(3);
             }
-            new_zonner.set_pos({ new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0 });
+            new_zonner.set_pos({ new_zonner.get_zonners().getPosition().x + temp_num, new_zonner.get_zonners().getPosition().y + 0 });
         }
-        //window.draw(shape);
         window.display();
         Sleep(2);
     }
