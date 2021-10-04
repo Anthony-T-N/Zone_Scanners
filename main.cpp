@@ -121,42 +121,50 @@ int main()
         {
             //std::cout << sf::Mouse::getPosition() << "\n";
             new_zonner.spawn_to_window(window);
-            /*
-            if (window.GetPixel(posX + a, posY + b) == wallColor)
-            {
-
-            }// define wallColor
-            */
             // https://stackoverflow.com/questions/46754875/pixel-with-specyfic-color-is-not-in-the-position-it-was-put-in-sfml
             sf::Color imagecolor = image.getPixel((new_zonner.get_zonners().getPosition().x + 1) / ScaleX, (new_zonner.get_zonners().getPosition().y + 0) / ScaleY);
             //std::cout << "x:" << new_zonner.get_zonners().getPosition().x + 1 << " y: " << new_zonner.get_zonners().getPosition().y + 0 << "\n";
             std::cout << "[DEBUG]: " << (float)imagecolor.toInteger() << "\n";
             // https://en.sfml-dev.org/forums/index.php?topic=23869.0
-            image.setPixel((new_zonner.get_zonners().getPosition().x + 1) / ScaleX, (new_zonner.get_zonners().getPosition().y + 0) / ScaleY, sf::Color::Red);
+            //image.setPixel((new_zonner.get_zonners().getPosition().x + 1) / ScaleX, (new_zonner.get_zonners().getPosition().y + 0) / ScaleY, sf::Color::Red);
             textureBackground.loadFromImage(image);
             //std::cout << (window.capture().getPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)).toInteger() << "\n";
             bool temp_switch = true;
+            bool turn_around = true;
             int temp_num = 1;
-            if ((float)imagecolor.toInteger() == 255)
+            if ((float)imagecolor.toInteger() == 255) // 255 == Black
             {
-                std::cout << "[DEBUG]: Change colour" << "\n";
+                turn_around = true;
                 // new_zonner.get_zonners().setFillColor(sf::Color::Blue); Doesn't work, why ?
                 new_zonner.set_colour(2);
-                std::cout << "[DEBUG]: " << new_zonner.get_zonners().getFillColor().toInteger() << "\n";
-                if (temp_switch == true)
-                {
-                    temp_num = -1;
-                    temp_switch = false;
-                }
-                else if (temp_switch == false)
-                {
-                    temp_num = 1;
-                    temp_switch = true;
-                }
             }
-            else
+            else // Hits any other colour. Example: White
             {
                 new_zonner.set_colour(3);
+                if (temp_num == 1)
+                {
+                    temp_num = -1;
+                }
+                else
+                {
+                    temp_num = 1;
+                }
+                /*
+                if (turn_around == true)
+                {
+                    if (temp_switch == true)
+                    {
+                        temp_num = -1;
+                        temp_switch = false;
+                    }
+                    else if (temp_switch == false)
+                    {
+                        temp_num = 1;
+                        temp_switch = true;
+                    }
+                    turn_around = false;
+                }
+                */
             }
             new_zonner.set_pos({ new_zonner.get_zonners().getPosition().x + temp_num, new_zonner.get_zonners().getPosition().y + 0 });
         }
