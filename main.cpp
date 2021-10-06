@@ -98,6 +98,7 @@ int main()
 
         image = textureBackground.copyToImage();
     }
+    int temp_num = 1;
     while (window.isOpen())
     {
         sf::Event event;
@@ -122,7 +123,15 @@ int main()
             //std::cout << sf::Mouse::getPosition() << "\n";
             new_zonner.spawn_to_window(window);
             // https://stackoverflow.com/questions/46754875/pixel-with-specyfic-color-is-not-in-the-position-it-was-put-in-sfml
-            sf::Color imagecolor = image.getPixel((new_zonner.get_zonners().getPosition().x + 1) / ScaleX, (new_zonner.get_zonners().getPosition().y + 0) / ScaleY);
+            sf::Color imagecolor;
+            if (temp_num == 1)
+            {
+                imagecolor = image.getPixel((new_zonner.get_zonners().getPosition().x + 15) / ScaleX, (new_zonner.get_zonners().getPosition().y + 0) / ScaleY);
+            }
+            else
+            {
+                imagecolor = image.getPixel((new_zonner.get_zonners().getPosition().x + -15) / ScaleX, (new_zonner.get_zonners().getPosition().y + 0) / ScaleY);
+            }
             //std::cout << "x:" << new_zonner.get_zonners().getPosition().x + 1 << " y: " << new_zonner.get_zonners().getPosition().y + 0 << "\n";
             std::cout << "[DEBUG]: " << (float)imagecolor.toInteger() << "\n";
             // https://en.sfml-dev.org/forums/index.php?topic=23869.0
@@ -131,7 +140,6 @@ int main()
             //std::cout << (window.capture().getPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)).toInteger() << "\n";
             bool temp_switch = true;
             bool turn_around = true;
-            int temp_num = 1;
             if ((float)imagecolor.toInteger() == 255) // 255 == Black
             {
                 turn_around = true;
