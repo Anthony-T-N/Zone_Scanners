@@ -39,6 +39,39 @@ public:
             zonner.setFillColor(sf::Color::Cyan);
         }
     }
+    void colour_collision(int& temp_num, sf::Color& imagecolor, sf::Image& image, sf::Texture& textureBackground, float& ScaleX, float& ScaleY)
+    {
+        if (temp_num == 1)
+        {
+            imagecolor = image.getPixel((zonner.getPosition().x + 15) / ScaleX, (zonner.getPosition().y + 0) / ScaleY);
+        }
+        //std::cout << "x:" << new_zonner.get_zonners().getPosition().x + 1 << " y: " << new_zonner.get_zonners().getPosition().y + 0 << "\n";
+        std::cout << "[DEBUG]: " << (float)imagecolor.toInteger() << "\n";
+        // https://en.sfml-dev.org/forums/index.php?topic=23869.0
+        //image.setPixel((new_zonner.get_zonners().getPosition().x + 1) / ScaleX, (new_zonner.get_zonners().getPosition().y + 0) / ScaleY, sf::Color::Red);
+        textureBackground.loadFromImage(image);
+        //std::cout << (window.capture().getPixel(new_zonner.get_zonners().getPosition().x + 1, new_zonner.get_zonners().getPosition().y + 0)).toInteger() << "\n";
+        bool temp_switch = true;
+        bool turn_around = true;
+        if ((float)imagecolor.toInteger() == 255) // 255 == Black
+        {
+            turn_around = true;
+            // new_zonner.get_zonners().setFillColor(sf::Color::Blue); Doesn't work, why ?
+            zonner.setFillColor(sf::Color::Blue);
+        }
+        else // Hits any other colour. Example: White
+        {
+            zonner.setFillColor(sf::Color::Cyan);
+            if (temp_num == 1)
+            {
+                temp_num = -1;
+            }
+            else
+            {
+                temp_num = 1;
+            }
+        }
+    }
     sf::RectangleShape get_zonners()
     {
         return zonner;
@@ -99,6 +132,7 @@ int main()
         image = textureBackground.copyToImage();
     }
     int temp_num = 1;
+    sf::Color imagecolor;
     while (window.isOpen())
     {
         sf::Event event;
@@ -123,14 +157,10 @@ int main()
             //std::cout << sf::Mouse::getPosition() << "\n";
             new_zonner.spawn_to_window(window);
             // https://stackoverflow.com/questions/46754875/pixel-with-specyfic-color-is-not-in-the-position-it-was-put-in-sfml
-            sf::Color imagecolor;
+            /*
             if (temp_num == 1)
             {
                 imagecolor = image.getPixel((new_zonner.get_zonners().getPosition().x + 15) / ScaleX, (new_zonner.get_zonners().getPosition().y + 0) / ScaleY);
-            }
-            else
-            {
-                imagecolor = image.getPixel((new_zonner.get_zonners().getPosition().x + -15) / ScaleX, (new_zonner.get_zonners().getPosition().y + 0) / ScaleY);
             }
             //std::cout << "x:" << new_zonner.get_zonners().getPosition().x + 1 << " y: " << new_zonner.get_zonners().getPosition().y + 0 << "\n";
             std::cout << "[DEBUG]: " << (float)imagecolor.toInteger() << "\n";
@@ -157,23 +187,9 @@ int main()
                 {
                     temp_num = 1;
                 }
-                /*
-                if (turn_around == true)
-                {
-                    if (temp_switch == true)
-                    {
-                        temp_num = -1;
-                        temp_switch = false;
-                    }
-                    else if (temp_switch == false)
-                    {
-                        temp_num = 1;
-                        temp_switch = true;
-                    }
-                    turn_around = false;
-                }
-                */
             }
+            */
+            new_zonner.colour_collision(temp_num, imagecolor, image, textureBackground, ScaleX, ScaleY);
             new_zonner.set_pos({ new_zonner.get_zonners().getPosition().x + temp_num, new_zonner.get_zonners().getPosition().y + 0 });
         }
         window.display();
